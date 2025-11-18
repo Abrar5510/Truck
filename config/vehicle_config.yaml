@@ -1,0 +1,265 @@
+# Vehicle Configuration for Self-Driving Truck
+
+vehicle:
+  # Physical Dimensions
+  dimensions:
+    cab:
+      length: 7.0  # meters
+      width: 2.5
+      height: 3.5
+      wheelbase: 4.5
+      track_width: 2.1
+      ground_clearance: 0.3
+
+    trailer:
+      length: 13.6  # Standard 45ft trailer
+      width: 2.5
+      height: 4.0
+      wheelbase: 9.0
+      kingpin_to_rear_axle: 11.0
+
+  # Mass Properties
+  mass:
+    cab_empty: 8000  # kg
+    cab_max_payload: 0  # No payload in cab
+    trailer_empty: 4000
+    trailer_max_payload: 28000
+    max_gross_weight: 40000  # Total legal limit
+
+  # Performance Limits
+  performance:
+    max_speed: 37.0  # m/s (~130 km/h, 85 mph)
+    cruise_speed: 29.0  # m/s (~105 km/h, 65 mph)
+    max_acceleration: 2.5  # m/s²
+    max_deceleration: 8.0  # m/s² (emergency braking)
+    comfortable_deceleration: 3.0  # m/s²
+    max_jerk: 2.0  # m/s³
+
+  # Steering
+  steering:
+    max_steering_angle: 35.0  # degrees
+    max_steering_rate: 30.0  # degrees/second
+    steering_ratio: 20.0  # steering wheel to road wheel
+    min_turning_radius: 12.0  # meters
+
+  # Articulation (fifth wheel)
+  articulation:
+    max_hitch_angle: 60.0  # degrees (jackknife limit)
+    warning_hitch_angle: 45.0  # degrees
+    critical_hitch_angle: 55.0  # degrees
+    fifth_wheel_offset: -0.5  # meters from rear axle
+
+  # Braking System
+  braking:
+    type: "air_brake"
+    response_time: 0.4  # seconds (air brake lag)
+    max_brake_pressure: 120  # psi
+    abs_equipped: true
+    ebs_equipped: true  # Electronic Braking System
+
+  # Powertrain
+  powertrain:
+    engine_type: "diesel"
+    max_power: 450  # hp
+    max_torque: 2200  # Nm
+    transmission: "automated_manual"
+    num_gears: 12
+    final_drive_ratio: 3.42
+
+# Safety Margins
+safety:
+  # Following Distance
+  following_distance:
+    time_gap_highway: 2.5  # seconds
+    time_gap_urban: 3.0  # seconds
+    minimum_distance: 10.0  # meters
+
+  # Lane Keeping
+  lane_keeping:
+    max_lateral_error: 0.5  # meters
+    warning_lateral_error: 0.3  # meters
+    lane_width_assumption: 3.5  # meters
+
+  # Obstacle Clearance
+  obstacle_clearance:
+    lateral_margin: 0.5  # meters
+    longitudinal_margin: 2.0  # meters
+
+  # Speed Limits
+  speed_limits:
+    highway: 29.0  # m/s (105 km/h)
+    urban: 13.9  # m/s (50 km/h)
+    residential: 8.3  # m/s (30 km/h)
+    construction_zone: 11.1  # m/s (40 km/h)
+
+# Operational Design Domain (ODD)
+odd:
+  # Weather Conditions
+  weather:
+    max_rain_intensity: 25  # mm/hour (light to moderate rain)
+    max_wind_speed: 15  # m/s (~33 mph)
+    min_visibility: 200  # meters
+    temperature_range: [-10, 45]  # Celsius
+    snow_ice: false  # No operation in snow/ice
+
+  # Road Types
+  road_types:
+    - "highway"
+    - "interstate"
+    - "divided_highway"
+    # NOT: residential, unpaved, mountainous
+
+  # Time of Day
+  time_of_day:
+    - "day"
+    - "dusk_dawn"  # Limited
+    # "night" requires additional validation
+
+  # Geographic
+  geographic:
+    max_grade: 8  # percent
+    max_curvature: 0.02  # 1/meters (radius >= 50m)
+
+# Sensor Mounting Positions (relative to vehicle center)
+sensor_mounting:
+  cameras:
+    front_center:
+      position: [3.5, 0.0, 2.8]  # [x, y, z] in meters
+      orientation: [0, 0, 0]  # [roll, pitch, yaw] in degrees
+      fov_horizontal: 120
+      fov_vertical: 75
+
+    front_left:
+      position: [3.2, -1.0, 2.8]
+      orientation: [0, 0, 30]
+      fov_horizontal: 120
+      fov_vertical: 75
+
+    front_right:
+      position: [3.2, 1.0, 2.8]
+      orientation: [0, 0, -30]
+      fov_horizontal: 120
+      fov_vertical: 75
+
+    rear_center:
+      position: [-3.5, 0.0, 2.8]
+      orientation: [0, 0, 180]
+      fov_horizontal: 120
+      fov_vertical: 75
+
+    side_left:
+      position: [0.0, -1.25, 2.5]
+      orientation: [0, 0, 90]
+      fov_horizontal: 120
+      fov_vertical: 75
+
+    side_right:
+      position: [0.0, 1.25, 2.5]
+      orientation: [0, 0, -90]
+      fov_horizontal: 120
+      fov_vertical: 75
+
+  lidar:
+    roof:
+      position: [0.0, 0.0, 3.6]
+      orientation: [0, 0, 0]
+      vertical_fov: 40  # degrees
+      horizontal_fov: 360
+      num_channels: 64
+      max_range: 200  # meters
+      rotation_frequency: 10  # Hz
+
+  radar:
+    front_long_range:
+      position: [3.5, 0.0, 1.0]
+      orientation: [0, 0, 0]
+      max_range: 250  # meters
+      fov: 30  # degrees
+
+    front_left:
+      position: [3.0, -1.0, 0.8]
+      orientation: [0, 0, 45]
+      max_range: 100
+      fov: 60
+
+    front_right:
+      position: [3.0, 1.0, 0.8]
+      orientation: [0, 0, -45]
+      max_range: 100
+      fov: 60
+
+    rear:
+      position: [-3.5, 0.0, 1.0]
+      orientation: [0, 0, 180]
+      max_range: 100
+      fov: 60
+
+  imu:
+    position: [0.0, 0.0, 0.5]
+
+  gps:
+    position: [0.0, 0.0, 3.7]
+    type: "RTK"  # Real-Time Kinematic
+    accuracy: 0.02  # meters
+
+# Control Parameters
+control:
+  # Update Frequencies
+  frequencies:
+    perception: 30  # Hz
+    planning: 10  # Hz
+    control: 100  # Hz
+    sensor_fusion: 100  # Hz
+
+  # PID Gains (Lateral Control)
+  lateral_pid:
+    kp: 0.5
+    ki: 0.01
+    kd: 0.1
+    max_output: 35.0  # degrees
+
+  # PID Gains (Longitudinal Control)
+  longitudinal_pid:
+    kp: 0.3
+    ki: 0.05
+    kd: 0.02
+    max_output: 1.0  # normalized [0, 1]
+
+  # MPC Parameters
+  mpc:
+    prediction_horizon: 2.0  # seconds
+    control_horizon: 1.0  # seconds
+    timestep: 0.1  # seconds
+
+# Logging and Diagnostics
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  log_sensors: true
+  log_perception: true
+  log_planning: true
+  log_control: true
+  log_frequency: 10  # Hz
+  storage_path: "/var/log/autonomous_truck/"
+
+# Emergency Behaviors
+emergency:
+  # Emergency Stop
+  emergency_stop:
+    deceleration: 8.0  # m/s²
+    activate_hazards: true
+    pull_to_shoulder: true
+
+  # Minimum Risk Condition
+  minimum_risk_condition:
+    target_speed: 0.0
+    lane_position: "shoulder"
+    hazards: true
+    duration: 300  # seconds (5 minutes)
+
+  # Fail-safe Triggers
+  failsafe_triggers:
+    - "sensor_failure"
+    - "localization_loss"
+    - "perception_failure"
+    - "critical_system_error"
+    - "driver_takeover_request"
